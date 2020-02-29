@@ -5126,7 +5126,6 @@ var PS = {};
   var Control_Bind = $PS["Control.Bind"];
   var Control_Monad_Error_Class = $PS["Control.Monad.Error.Class"];
   var Data_Functor = $PS["Data.Functor"];
-  var Data_Maybe = $PS["Data.Maybe"];
   var Data_Unit = $PS["Data.Unit"];
   var Effect = $PS["Effect"];
   var Effect_Aff = $PS["Effect.Aff"];
@@ -5145,13 +5144,6 @@ var PS = {};
                   return HTTPure_Response.internalServerError(Effect_Aff_Class.monadAffAff)(HTTPure_Body.bodyString)("Internal server error");
               });
           });
-      };
-  };
-  var listenOptions = function (port) {
-      return {
-          hostname: "localhost",
-          port: port,
-          backlog: Data_Maybe.Nothing.value
       };
   };
   var handleRequest = function (router) {
@@ -5174,10 +5166,7 @@ var PS = {};
           };
       };
   };
-  var serve = function ($1) {
-      return serve$prime(listenOptions($1));
-  };
-  exports["serve"] = serve;
+  exports["serve'"] = serve$prime;
 })(PS);
 (function(exports) {
   "use strict";
@@ -5229,7 +5218,11 @@ var PS = {};
   };
   var main = function __do() {
       var port = lookupPort();
-      return HTTPure_Server.serve(port)(function (v) {
+      return HTTPure_Server["serve'"]({
+          port: port,
+          hostname: "0.0.0.0",
+          backlog: Data_Maybe.Nothing.value
+      })(function (v) {
           return HTTPure_Response.ok(Effect_Aff_Class.monadAffAff)(HTTPure_Body.bodyString)("hello world");
       })(Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Running on port: " + Data_Show.show(Data_Show.showInt)(port)))();
   };
